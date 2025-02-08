@@ -671,7 +671,7 @@ spec:
       
       initContainers:
       - name: clear-stale-pid
-        image: docker.io/kong:3.8
+        image: docker.io/library/kong:3.8
         imagePullPolicy: IfNotPresent
         securityContext:
         
@@ -756,7 +756,7 @@ spec:
           mountPath: /kong_dbless/
       containers:
       - name: "proxy"
-        image: docker.io/kong:3.8
+        image: docker.io/library/kong:3.8
         imagePullPolicy: IfNotPresent
         securityContext:
         
