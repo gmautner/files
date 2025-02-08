@@ -955,7 +955,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard-api
-          image: docker.io/library/kubernetesui/dashboard-api:1.10.2
+          image: docker.io/kubernetesui/dashboard-api:1.10.2
           imagePullPolicy: IfNotPresent
           args:
             - --namespace=kubernetes-dashboard
@@ -1068,7 +1068,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard-auth
-          image: docker.io/library/kubernetesui/dashboard-auth:1.2.3
+          image: docker.io/kubernetesui/dashboard-auth:1.2.3
           imagePullPolicy: IfNotPresent
           args:
 
@@ -1177,7 +1177,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard-metrics-scraper
-          image: docker.io/library/kubernetesui/dashboard-metrics-scraper:1.2.2
+          image: docker.io/kubernetesui/dashboard-metrics-scraper:1.2.2
           imagePullPolicy: IfNotPresent
 
           env:
@@ -1289,7 +1289,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard-web
-          image: docker.io/library/kubernetesui/dashboard-web:1.6.1
+          image: docker.io/kubernetesui/dashboard-web:1.6.1
           imagePullPolicy: IfNotPresent
           args:
             - --namespace=kubernetes-dashboard
