@@ -1,3 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubernetes-dashboard
 ---
 # Source: kubernetes-dashboard/charts/kong/templates/service-account.yaml
 apiVersion: v1
@@ -39,6 +43,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-api
+  namespace: kubernetes-dashboard
 ---
 # Source: kubernetes-dashboard/templates/rbac/metrics-scraper/serviceaccount.yaml
 # Copyright 2017 The Kubernetes Authors.
@@ -66,6 +71,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
 ---
 # Source: kubernetes-dashboard/templates/rbac/web/serviceaccount.yaml
 # Copyright 2017 The Kubernetes Authors.
@@ -93,6 +99,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web
+  namespace: kubernetes-dashboard
 ---
 # Source: kubernetes-dashboard/templates/secrets/csrf.yaml
 # Copyright 2017 The Kubernetes Authors.
@@ -120,6 +127,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-csrf
+  namespace: kubernetes-dashboard
 data:
   private.key: "UVVZdDVGbUZnTWMwUjRCNzkrdWx4S2xZVWI4L01TNmREK2VCU2JGMzlWMXBVZi9FcTNOdWE5cTBPKzFJb0hzN0VqNnJPY29FMlNIN1VTVnpFdnBlclhpVGdRd3o1WVk3cjNZMVVmZURQT1hlYjJocW5EZWdWVnVVUDFhdUVlMUxZUFY5QmV5KzdNTlRCUk1FbGtKUExFRXQ1UVRia2Q1empWQjJJYVBreVJTazhVbjRYL1RPd0lmSUsyYks2R2ZhbGlUeEwvNFRBeDdaR2ZtMGZzNkZ0c0x6RmZsNjFKUjc3ZkQ0S09XcU9kN0xUWmpwRFZMc0Q4V1N3MDRhdzZvckdtTGRhcDEwNU1rWGtnczcyY2RDSTlteURjTTZJWmtBbGp0YU9kSS9qRWFQNVlkbkc2dmMzV1ZUT0luUHdjZFB0TFIrVjBieEZDckhPZlVMR1VxUkVRPT0="
 ---
@@ -149,6 +157,7 @@ metadata:
   annotations:
     
   name: kong-dbless-config
+  namespace: kubernetes-dashboard
 data:
   kong.yml: |
     _format_version: "3.0"
@@ -219,6 +228,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web-settings
+  namespace: kubernetes-dashboard
 data:
 ---
 # Source: kubernetes-dashboard/templates/rbac/metrics-scraper/clusterrole.yaml
@@ -314,6 +324,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-api
+  namespace: kubernetes-dashboard
 rules:
     # Allow Dashboard API to get metrics from metrics-scraper.
   - apiGroups: [ "" ]
@@ -347,6 +358,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web
+  namespace: kubernetes-dashboard
 rules:
     # Allow Dashboard Web to get and update 'kubernetes-dashboard-settings' config map.
   - apiGroups: [ "" ]
@@ -380,6 +392,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-api
+  namespace: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -414,6 +427,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web
+  namespace: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -477,6 +491,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-api
+  namespace: kubernetes-dashboard
 spec:
   type: ClusterIP
   ports:
@@ -521,6 +536,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-auth
+  namespace: kubernetes-dashboard
 spec:
   type: ClusterIP
   ports:
@@ -565,6 +581,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
 spec:
   type: ClusterIP
   ports:
@@ -610,6 +627,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web
+  namespace: kubernetes-dashboard
 spec:
   type: ClusterIP
   ports:
@@ -932,6 +950,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-api
+  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -1045,6 +1064,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-auth
+  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -1155,6 +1175,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-metrics-scraper
+  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -1267,6 +1288,7 @@ metadata:
   annotations:
     
   name: kubernetes-dashboard-web
+  namespace: kubernetes-dashboard
 spec:
   replicas: 1
   revisionHistoryLimit: 10
