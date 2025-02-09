@@ -1,0 +1,53 @@
+routingMode: tunnel
+resources:
+  requests:
+    cpu: 75m
+    memory: 1Gi
+  limits:
+    cpu: '1'
+    memory: 1Gi
+operator:
+  resources:
+    requests:
+      cpu: 20m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+hubble:
+  # https://docs.cilium.io/en/latest/observability/hubble/configuration/tls/#enable-tls-on-the-hubble-api aba Helm
+  tls:
+    auto:
+      enabled: true
+      method: helm
+      certValidityDuration: 1095
+  relay:
+    enabled: true
+    resources:
+      requests:
+        cpu: 20m
+        memory: 256Mi
+      limits:
+        cpu: 250m
+        memory: 256Mi
+  ui:
+    enabled: true
+    backend:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 256Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+    frontend:
+      resources:
+        requests:
+          cpu: 20m
+          memory: 256Mi
+        limits:
+          cpu: 250m
+          memory: 256Mi
+  metrics:
+    enabled:
+      - "policy:sourceContext=app|workload-name|pod|reserved-identity;destinationContext=app|workload-name|pod|dns|reserved-identity;labelsContext=source_namespace,destination_namespace"
