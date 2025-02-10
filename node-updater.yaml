@@ -37,7 +37,7 @@ spec:
               echo "Node $(hostname): Running apt update/upgrade and configuring unattended-upgrades..."
               
               # Perform update, upgrade and install unattended-upgrades inside the host environment.
-              chroot /host /bin/bash -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && apt-get install -y unattended-upgrades"
+              chroot /host /bin/bash -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y unattended-upgrades"
               
               # Configure unattended-upgrades for automatic updates.
               # We write the configuration file directly rather than using sudo/tee since we're running as root.
