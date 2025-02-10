@@ -47,13 +47,13 @@ CRICTL_VERSION="v${4}"
 echo "Downloading CRI tools ${CRICTL_VERSION}..."
 crictl_dir="${working_dir}/cri-tools/"
 mkdir -p "${crictl_dir}"
-curl -L "https://github.com/kubernetes-incubator/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" -o "${crictl_dir}/crictl-linux-amd64.tar.gz"
+curl -L "https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL_VERSION}/crictl-${CRICTL_VERSION}-linux-amd64.tar.gz" -o "${crictl_dir}/crictl-linux-amd64.tar.gz"
 
 echo "Downloading Kubernetes tools ${RELEASE}..."
 k8s_dir="${working_dir}/k8s"
 mkdir -p "${k8s_dir}"
 cd "${k8s_dir}"
-curl -L --remote-name-all https://dl.k8s.io/release/${RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
+curl -L --remote-name-all https://dl.k8s.io/${RELEASE}/bin/linux/amd64/{kubeadm,kubelet,kubectl}
 kubeadm_file_permissions=`stat --format '%a' kubeadm`
 chmod +x kubeadm
 
@@ -79,7 +79,11 @@ fi
 NETWORK_CONFIG_URL="${5}"
 echo "Downloading network config ${NETWORK_CONFIG_URL}"
 network_conf_file="${working_dir}/network.yaml"
-curl -sSL ${NETWORK_CONFIG_URL} -o ${network_conf_file}
+if [ -f "$NETWORK_CONFIG_URL" ];then
+  cp "${NETWORK_CONFIG_URL}" ${network_conf_file}
+else
+  curl -sSL ${NETWORK_CONFIG_URL} -o ${network_conf_file}
+fi
 
 DASHBORAD_CONFIG_URL="${6}"
 echo "Downloading dashboard config ${DASHBORAD_CONFIG_URL}"
