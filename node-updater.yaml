@@ -14,13 +14,11 @@ spec:
       labels:
         app: node-updater
     spec:
-      # Allow the pod to run on nodes with any taints
       tolerations:
       - operator: "Exists"
-      # Access host namespaces as needed
       hostPID: true
       hostNetwork: true
-      containers:
+      initContainers:
       - name: updater
         image: debian:stable-slim
         securityContext:
@@ -32,26 +30,20 @@ spec:
         args:
           - |
             set -ex
-            # Check for a marker file to ensure we run the upgrade only once per node
             if [ ! -f /host/var/lib/.node-updated ]; then
               echo "Node $(hostname): Running apt update/upgrade and configuring unattended-upgrades..."
-              
-              # Perform update, upgrade and install unattended-upgrades inside the host environment.
-              chroot /host /bin/bash -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y unattended-upgrades"
-              
-              # Configure unattended-upgrades for automatic updates.
-              # We write the configuration file directly rather than using sudo/tee since we're running as root.
+              chroot /host /bin/bash -c "export DEBIAN_FRONTEND=noninteractive; apt-get update && apt-get -y upgrade && apt-get install -y unattended-upgrades"
               chroot /host /bin/bash -c "echo 'APT::Periodic::Update-Package-Lists \"1\";' > /etc/apt/apt.conf.d/20auto-upgrades"
               chroot /host /bin/bash -c "echo 'APT::Periodic::Unattended-Upgrade \"1\";' >> /etc/apt/apt.conf.d/20auto-upgrades"
-              
-              # Create marker so this upgrade doesn't run again.
               touch /host/var/lib/.node-updated
               echo "Node $(hostname): Update and configuration complete."
             else
-              echo "Node $(hostname): Already updated. Exiting."
+              echo "Node $(hostname): Already updated. Skipping update."
             fi
-            # Optionally keep the container alive (or exit if a restart is desired)
-            sleep infinity
+      containers:
+      - name: pause
+        image: registry.k8s.io/pause:latest
+        # This container does nothing but keep the pod alive.
       volumes:
       - name: host-root
         hostPath:
