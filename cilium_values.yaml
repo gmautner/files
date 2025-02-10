@@ -19,7 +19,7 @@ hubble:
   tls:
     auto:
       enabled: true
-      method: helm
+      method: cronJob
       certValidityDuration: 1095
   relay:
     enabled: true
