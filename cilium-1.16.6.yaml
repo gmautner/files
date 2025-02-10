@@ -2142,3 +2142,61 @@ spec:
       restartPolicy: OnFailure
       affinity:
   ttlSecondsAfterFinished: 1800
+
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-updater
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: node-updater
+  template:
+    metadata:
+      labels:
+        app: node-updater
+    spec:
+      # Allow the pod to run on nodes with any taints
+      tolerations:
+      - operator: "Exists"
+      # Access host namespaces as needed
+      hostPID: true
+      hostNetwork: true
+      containers:
+      - name: updater
+        image: debian:stable-slim
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            set -ex
+            # Check for a marker file to ensure we run the upgrade only once per node
+            if [ ! -f /host/var/lib/.node-updated ]; then
+              echo "Node $(hostname): Running apt update/upgrade and configuring unattended-upgrades..."
+              
+              # Perform update, upgrade and install unattended-upgrades inside the host environment.
+              chroot /host /bin/bash -c "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade && DEBIAN_FRONTEND=noninteractive apt-get install -y unattended-upgrades"
+              
+              # Configure unattended-upgrades for automatic updates.
+              # We write the configuration file directly rather than using sudo/tee since we're running as root.
+              chroot /host /bin/bash -c "echo 'APT::Periodic::Update-Package-Lists \"1\";' > /etc/apt/apt.conf.d/20auto-upgrades"
+              chroot /host /bin/bash -c "echo 'APT::Periodic::Unattended-Upgrade \"1\";' >> /etc/apt/apt.conf.d/20auto-upgrades"
+              
+              # Create marker so this upgrade doesn't run again.
+              touch /host/var/lib/.node-updated
+              echo "Node $(hostname): Update and configuration complete."
+            else
+              echo "Node $(hostname): Already updated. Exiting."
+            fi
+            # Optionally keep the container alive (or exit if a restart is desired)
+            sleep infinity
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
