@@ -1,5 +1,9 @@
 ```bash
 helm repo add cilium https://helm.cilium.io/
+chmod +x ./create-kubernetes-binaries-iso.sh
+```
+
+```bash
 helm template cilium/cilium --version 1.16.6 \
   -f cilium_values.yaml \
   --namespace kube-system \
