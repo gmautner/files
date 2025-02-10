@@ -1,4 +1,6 @@
 ```bash
+git clone https://github.com/gmautner/files.git
+cd files
 helm repo add cilium https://helm.cilium.io/
 chmod +x ./create-kubernetes-binaries-iso.sh
 ```
