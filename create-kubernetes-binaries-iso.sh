@@ -128,6 +128,9 @@ output=`printf "%s\n" ${output} ${autoscaler_image}`
 provider_image=`grep "image:" ${provider_conf_file} | cut -d ':' -f2- | tr -d ' '`
 output=`printf "%s\n" ${output} ${provider_image}`
 
+# Deduplicate the output list
+output=$(echo "$output" | sort -u)
+
 while read -r line; do
     # Remove any double quotes from the image name to avoid issues with ctr commands
     line="${line//\"/}"
