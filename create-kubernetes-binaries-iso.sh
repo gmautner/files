@@ -147,9 +147,9 @@ while read -r line; do
         fi
     fi
     echo "Downloading image $line ---"
-    sudo ctr image pull --platform linux/amd64 "$line"
+    sudo ctr image pull "$line"
     image_name=`echo "$line" | grep -oE "[^/]+$"`
-    sudo ctr image export --platform linux/amd64 "${working_dir}/docker/$image_name.tar" "$line"
+    sudo ctr image export "${working_dir}/docker/$image_name.tar" "$line"
     sudo ctr image rm "$line"
 done <<< "$output"
 
