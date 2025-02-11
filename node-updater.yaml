@@ -20,7 +20,7 @@ spec:
       hostNetwork: true
       initContainers:
       - name: updater
-        image: debian:stable-slim
+        image: amd64/debian:stable-slim
         securityContext:
           privileged: true
         volumeMounts:
