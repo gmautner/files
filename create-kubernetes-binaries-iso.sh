@@ -117,7 +117,8 @@ output=`${k8s_dir}/kubeadm config images list --kubernetes-version=${RELEASE}`
 # Don't forget about the yaml images !
 for i in ${network_conf_file} ${dashboard_conf_file}
 do
-  images=`grep "image:" $i | cut -d ':' -f2- | tr -d ' ' | tr -d "'"`
+  # exclude expressions like my_image etc.
+  images=`grep "^[[:space:]]*image:" $i | cut -d ':' -f2- | tr -d ' ' | tr -d "'"`
   output=`printf "%s\n" ${output} ${images}`
 done
 
