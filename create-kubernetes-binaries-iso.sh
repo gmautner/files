@@ -123,10 +123,10 @@ do
 done
 
 # Don't forget about the other image !
-autoscaler_image=`grep "image:" ${autoscaler_conf_file} | cut -d ':' -f2- | tr -d ' '`
+autoscaler_image=`grep "^[[:space:]]*image:" ${autoscaler_conf_file} | cut -d ':' -f2- | tr -d ' '`
 output=`printf "%s\n" ${output} ${autoscaler_image}`
 
-provider_image=`grep "image:" ${provider_conf_file} | cut -d ':' -f2- | tr -d ' '`
+provider_image=`grep "^[[:space:]]*image:" ${provider_conf_file} | cut -d ':' -f2- | tr -d ' '`
 output=`printf "%s\n" ${output} ${provider_image}`
 
 # Deduplicate the output list
