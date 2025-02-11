@@ -51,3 +51,6 @@ hubble:
   metrics:
     enabled:
       - "policy:sourceContext=app|workload-name|pod|reserved-identity;destinationContext=app|workload-name|pod|dns|reserved-identity;labelsContext=source_namespace,destination_namespace"
+certgen:
+  # job precisa ser apagado para evitar colisões em campos imutáveis com futuros upgrades
+  ttlSecondsAfterFinished: 180
